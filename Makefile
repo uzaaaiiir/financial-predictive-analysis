@@ -13,3 +13,7 @@ install:
 # Save requirements: make freeze
 freeze:
 	pip freeze > requirements.txt
+
+# Run linter: make lint
+lint:
+	flake8 app/ --count --exit-zero --max-complexity=10 --statistics  --ignore E501
