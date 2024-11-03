@@ -83,6 +83,6 @@ def generate_predictive_analysis(prompt: str) -> str:
         ]
     )
 
-    logger.info(f"Generated predictive analysis.")
+    logger.info("Generated predictive analysis.")
 
     return response.choices[0].message.content.strip()

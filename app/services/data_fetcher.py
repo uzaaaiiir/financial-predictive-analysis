@@ -1,7 +1,3 @@
-import json
-import requests
-import pandas as pd
-from dotenv import load_dotenv
 import yfinance as yf
 from app.logger import logger
 
@@ -47,6 +43,5 @@ def competitors_quarterly_revenue_yf(competitor_ticker_symbols: list) -> list:
         if data:
             competitor_data.append(data)
 
-    logger.info(f"Successfully fetched financial data for all competitors: 
-                {competitor_ticker_symbols}")
+    logger.info("Successfully fetched financial data for all competitors")
     return competitor_data
