@@ -33,25 +33,20 @@ def scrape_website_content(url):
     headings = [h.get_text() for h in soup.find_all(['h1', 'h2', 'h3'])]
     paragraphs = [p.get_text() for p in soup.find_all('p')]
     alt_texts = [img['alt'] for img in soup.find_all('img', alt=True)]
-    anchor_texts = [a.get_text() for a in soup.find_all('a')]
     anchor_links = [a['href'] for a in soup.find_all('a', href=True)]
 
     page_content = ' '.join(headings + paragraphs +
                             alt_texts + anchor_links) + meta_info
-
-    # Write to file
-    with open('output.txt', 'w', encoding='utf-8') as file:
-        file.write(page_content)
 
     return page_content
 
 
 def infer_industry_from_content(content):
     '''
-    Using ChatGPT to determine the industry and additional industry information based on website content.
+    Using OpenAI to determine the industry based on the website content.
     '''
     response = openai.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are an industry classifier. You will be given content derived from the website of a company using Beautiful Soup. Based on this content, determine what the industry of this company is. This information will be used to find competitors. Data of the competitors will be extracted and used to project future revenue, project future company members, project future marketing, and eventually produce a predictive analysis."},
             {"role": "user", "content": content},
@@ -61,25 +56,28 @@ def infer_industry_from_content(content):
     return response.choices[0].message
 
 
-def find_competitors(url: str) -> list:
+def find_competitors(website_content: str, industry_information: str) -> list:
     '''
-    Function retrieves website content for a company. The content is used to infer the industry information. 
-    After this, the potential competitors in this industry are found using ChatGPT and returned as a comma-separated list of ticker-symbols. 
+    Retrieves website content of a company, infers the industry, and uses OpenAI to find competitors. Competitors are returned as a comma-separated list of ticker-symbols.
     '''
-
-    website_content = scrape_website_content(url)
-    industry_information = infer_industry_from_content(website_content)
 
     response = openai.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are an AI trained to provide competitors for small and medium sized businesses. Based no the company's industry and description, list publicly-traded companies who are competitors. This competitor list will be used to conduct a predictive analysis that finds the projected revenue, marketing and more for the competitors. These will be used to perform the predictive analysis for the target company."},
+            {"role": "system", "content": "You are an AI trained to provide publicly-traded competitors for a company. Based on the company's industry and description, list the ticker symbols of publicly-traded competitors. This competitor list will be used to conduct a predictive analysis for a target company."},
             {"role": "user",
-                "content": f"This is the company industry information: {industry_information}. This is the information scraped from the website: {website_content}. \n\nPlease provide ONLY publicly-traded competitors for this company. Omit any private companies. Only provide the ticker symbol for each competitor separated by commas (Example: BMBL, META, PINS)."},
+                "content": f"Company industry information: {industry_information}.\nWebsite Content: {website_content}.\n\nPlease provide ONLY publicly-traded competitors for this company. Only provide the ticker symbol for each competitor separated by commas (Example: BMBL, META, PINS, SHOP, AMZN)."},
         ]
     )
 
-    return response.choices[0].message.content.split(', ')
+    competitors_raw = response.choices[0].message.content
 
+    # Debug: print the raw response from OpenAI to see what it returns
+    print("Raw OpenAI response:", competitors_raw)
 
-print(find_competitors("https://www.vibeup.io/"))
+    ticker_symbols = competitors_raw.split(", ")
+
+    # Debug: print the ticker symbols extracted
+    print("Extracted ticker symbols:", ticker_symbols)
+
+    return ticker_symbols
