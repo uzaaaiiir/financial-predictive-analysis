@@ -17,3 +17,20 @@ freeze:
 # Run linter: make lint
 lint:
 	flake8 app/ --count --exit-zero --max-complexity=10 --statistics  --ignore E501
+
+# Docker Commands 
+# Build docker image: make build
+docker-build:
+	docker build -t qinvst-app .
+
+# Run docker container: make run
+docker-run:
+	docker run -d -p 8000:8000 qinvst-app
+
+# Stop docker container: make stop
+docker-stop:
+	docker stop $(shell docker ps -a -q --filter ancestor=qinvst-app)
+
+# Remove docker container: make rm
+docker-rm:
+	docker rm $(shell docker ps -a -q --filter ancestor=qinvst-app)
