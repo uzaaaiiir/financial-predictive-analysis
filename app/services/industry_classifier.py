@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import os
+from app.logger import logger
 
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -38,6 +39,7 @@ def scrape_website_content(url):
     page_content = ' '.join(headings + paragraphs +
                             alt_texts + anchor_links) + meta_info
 
+    logger.info(f"Scraped website content: {url}")
     return page_content
 
 
@@ -73,11 +75,11 @@ def find_competitors(website_content: str, industry_information: str) -> list:
     competitors_raw = response.choices[0].message.content
 
     # Debug: print the raw response from OpenAI to see what it returns
-    print("Raw OpenAI response:", competitors_raw)
+    logger.info(f"Raw OpenAI response: {competitors_raw}")
 
     ticker_symbols = competitors_raw.split(", ")
 
     # Debug: print the ticker symbols extracted
-    print("Extracted ticker symbols:", ticker_symbols)
+    logger.info(f"Extracted ticker symbols: {ticker_symbols}")
 
     return ticker_symbols

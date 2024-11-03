@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+from app.logger import logger
 
 
 def format_financial_data_for_json(competitor_data: list) -> str:
@@ -11,4 +12,5 @@ def format_financial_data_for_json(competitor_data: list) -> str:
     }
 
     formatted_json: str = json.dumps(formatted_data, indent=4)
+    logger.info(f"Formatted financial data for OpenAI.")
     return formatted_json

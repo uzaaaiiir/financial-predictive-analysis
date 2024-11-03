@@ -5,6 +5,7 @@ from app.models import ForecastRequest
 from app.services.data_fetcher import competitors_quarterly_revenue_yf
 from app.services.industry_classifier import find_competitors, infer_industry_from_content, scrape_website_content
 from app.utils.format import format_financial_data_for_json
+from app.logger import logger
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -18,6 +19,7 @@ def generate_forecasting_prompt(requestInformation: ForecastRequest):
     website_content: str = scrape_website_content(
         requestInformation.website_url)
     industry_information: str = infer_industry_from_content(website_content)
+    logger.info(f"Industry information inferred: {industry_information}")
 
     # Extract competitor data
     competitors: list = find_competitors(website_content, industry_information)
@@ -80,5 +82,7 @@ def generate_predictive_analysis(prompt: str) -> str:
             {"role": "user", "content": prompt}
         ]
     )
+
+    logger.info(f"Generated predictive analysis.")
 
     return response.choices[0].message.content.strip()

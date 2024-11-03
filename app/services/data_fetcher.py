@@ -3,6 +3,7 @@ import requests
 import pandas as pd
 from dotenv import load_dotenv
 import yfinance as yf
+from app.logger import logger
 
 
 def fetch_quarterly_financial_data_yf(ticker_symbol: str) -> dict:
@@ -16,7 +17,7 @@ def fetch_quarterly_financial_data_yf(ticker_symbol: str) -> dict:
     balance_sheet = stock.quarterly_balance_sheet.T
 
     if income_statement.empty or balance_sheet.empty:
-        print(f"No data available for {ticker_symbol}")
+        logger.debug(f"No data available for {ticker_symbol}")
         return None
 
     # Convert date indices to string
@@ -30,6 +31,7 @@ def fetch_quarterly_financial_data_yf(ticker_symbol: str) -> dict:
         "balance_sheet": balance_sheet.to_dict()
     }
 
+    logger.info(f"Successfully fetched financial data for {ticker_symbol}")
     return financial_data
 
 
@@ -45,5 +47,6 @@ def competitors_quarterly_revenue_yf(competitor_ticker_symbols: list) -> list:
         if data:
             competitor_data.append(data)
 
-    print(competitor_data)
+    logger.info(f"Successfully fetched financial data for all competitors: 
+                {competitor_ticker_symbols}")
     return competitor_data
