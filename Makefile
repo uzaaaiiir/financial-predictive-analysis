@@ -25,7 +25,7 @@ docker-build:
 
 # Run docker container: make run
 docker-run:
-	docker run -d -p 8000:8000 qinvst-app
+	docker run -d --name qinvst-app-container -p 80:8000 qinvst-app
 
 # Stop docker container: make stop
 docker-stop:
