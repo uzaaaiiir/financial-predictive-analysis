@@ -1,4 +1,4 @@
-# QInvst Predictive Analysis
+# Predictive Analysis
 This project is an tool aimed at automating the process of collecting, extracting, and analyzing financial data for SMBs to perform a predictive analysis (PA). 
 
 ## Features
@@ -40,10 +40,9 @@ This project is an tool aimed at automating the process of collecting, extractin
     pip install -r requirements.txt
     ```
 
-6. Set up your environment variables: Create a `.env` file in the top-level project folder and add your environment variables, including your OpenAI API key and Alpha Vantage API Key. Your `.env` file should look like this:
+6. Set up your environment variables: Create a `.env` file in the top-level project folder and add your environment variables, including your OpenAI API key API Key. Your `.env` file should look like this:
     ```makefile
     OPENAI_API_KEY=your_openai_api_key
-    ALPHA_VANTAGE_API_KEY=your_alpha_vantage_api_key  
     ```
 
 ### Usage
