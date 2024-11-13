@@ -1,5 +1,5 @@
 # QInvst Predictive Analysis
-This project is an internal tool for QInvst aimed at automating the process of collecting, extracting, and analyzing financial data for SMBs to perform a predictive analysis (PA). 
+This project is an tool aimed at automating the process of collecting, extracting, and analyzing financial data for SMBs to perform a predictive analysis (PA). 
 
 ## Features
 - **Industry Classification**: Uses Natural Language Processing (NLP) to determine the industry based on company website content.
