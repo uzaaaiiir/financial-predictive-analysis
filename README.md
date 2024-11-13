@@ -12,12 +12,12 @@ This project is an tool aimed at automating the process of collecting, extractin
 ### Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/QInvst/qinvst-predictive-analysis.git
+    git clone https://github.com/uzaaaiiir/financial-predictive-analysis.git
     ```
 
 2. Navigate to the project directory
     ```bash
-    cd qinvst-predictive-analysis
+    cd financial-predictive-analysis
     ```
 
 3. Create a virtual environment in this top-level directory:
